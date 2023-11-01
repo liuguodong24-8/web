@@ -1,0 +1,17 @@
+export default {
+    id: 'id',
+    mes_important: 'mes_important',
+    'mes_important 0': 'mes_important 0',
+    'mes_important 1': 'mes_important 1',
+    mes_content: 'mes_content',
+    update_time: 'update_time',
+    create_time: 'create_time',
+    'quick Search Fields': 'id',
+    message_id: 'message_id',
+    message__mes_important: 'mes_important',
+    'message__mes_important 0': 'mes_important 0',
+    'message__mes_important 1': 'mes_important 1',
+    message__mes_content: 'mes_content',
+    dev_id: 'dev_id',
+    dev__user_name: 'user_name',
+}

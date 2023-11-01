@@ -1,0 +1,1 @@
+const e={id:"id",admin_id:"admin_id",admin__username:"username",admin__nickname:"nickname",teacher_id_card_no:"teacher_id_card_no",update_time:"update_time",create_time:"create_time","quick Search Fields":"id"};export{e as default};
