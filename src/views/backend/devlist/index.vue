@@ -121,7 +121,7 @@ const performSearch = () => {
 
     // 向后台请求index
     createAxios({
-        url: getUrl() + '/admin/devlist/index',
+        url: getUrl() + '/admin/DevList/index',
         method: 'get',
         params: {
             school: selectedFields.value,
@@ -258,6 +258,7 @@ const baTable = new baTableClass(new baTableApi('/admin/DevList/'), {
     pk: 'id',
     column: [
         {type: 'selection', align: 'center', operator: false},
+        {label: t('dev.user_avatar'), prop: 'user_avatar', align: 'center', render: 'image', operator: false},
         {
             label: t('学生名'),
             prop: 'user_name',

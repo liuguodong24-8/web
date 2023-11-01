@@ -34,7 +34,7 @@
                         <FormItem :label="t('结束时间')" type="datetime" v-model="baTable.form.items!.end_time" prop="end_time" />
                         <FormItem :label="t('班级')" type="string" v-model="baTable.form.items!.class_name" prop="class_name"  />
                         <FormItem :label="t('设备')" type="string" v-model="baTable.form.items!.device_id" prop="device_id" />
-                        <FormItem :label="t('操作人')"  type="string" v-model="baTable.form.items!.operator" prop="operator"  />
+                        <FormItem :label="t('操作人')"  type="string" v-model="baTable.form.items!.operator" model-value=defaultOperator />
 
                 </el-form>
 
@@ -62,6 +62,7 @@ import createAxios, {getUrl} from "/@/utils/axios";
 
 const showFormItem = ref(false);
 
+const defaultOperator  = ref(""); // 选择的字段
 
 const formRef = ref<FormInstance>()
 const baTable = inject('baTable') as baTableClass
@@ -78,7 +79,7 @@ const loadOperator = () => {
         url: getUrl() + '/admin/index/name',
         method: 'get',
     }).then((response) => {
-        // 处理后台响应并将数据赋值给cities
+        defaultOperator.value =  response.msg;
         baTable.form.items!.operator = response.msg;
     }).catch((error) => {
         console.error('请求数据失败', error);
