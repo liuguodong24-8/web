@@ -9,6 +9,25 @@
             :quick-search-placeholder="t('Quick search placeholder', { fields: t('dev.quick Search Fields') })"
         >
             <template #refreshPrepend>
+
+                    <el-popconfirm @confirm="onActions(1)"
+                                   :confirm-button-text="t('锁定')"
+                                   :cancel-button-text="t('取消')"
+                                   confirmButtonType="danger"
+                                   :title="t('是否锁定?')">
+                        <template #reference>
+                            <el-button type="danger">锁定</el-button>
+                        </template>
+                    </el-popconfirm>
+                    <el-popconfirm @confirm="onActions(0)"
+                                   :confirm-button-text="t('解锁')"
+                                   :cancel-button-text="t('取消')"
+                                   :title="t('是否解锁?')">
+                        <template #reference>
+                            <el-button type="success">启用</el-button>
+                        </template>
+                    </el-popconfirm>
+
                 <!-- 刷新按钮前插槽内容 -->
                 <!-- 一键锁定 -->
                 <el-popconfirm @confirm="onAction(1)"
@@ -49,6 +68,7 @@ import { ref, provide, onMounted } from 'vue'
 import baTableClass from '/@/utils/baTable'
 import { baTableApi } from '/@/api/common'
 import { lockConfirm } from '/@/api/backend/sccd'
+import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n'
 import PopupForm from './popupForm.vue'
 import Table from '/@/components/table/index.vue'
@@ -78,6 +98,35 @@ const onAction = (t:number)=>{
     console.log('点击');
     console.log(t);
 }
+
+/**
+ * t=1 一键锁定
+ * t=2 一键解锁
+ * @param t
+ */
+const onActions = (t:number)=>{
+    console.log('点击');
+    console.log(t);
+    const ids = baTable.getSelectionIds();
+
+    // 向后台请求index
+    createAxios({
+        url: getUrl() + '/admin/dev/lockOrUnlock',
+        method: 'post',
+        params: {
+            ids: ids,
+            state:t,
+        },
+    }).then((response) => {
+        console.log(response)
+        ElMessage.success('操作成功');
+    }).catch((error) => {
+        console.error('请求数据失败', error);
+        ElMessage.success('操作成功');
+    });
+
+}
+
 
 
 defineOptions({

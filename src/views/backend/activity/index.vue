@@ -136,6 +136,13 @@ const baTable = new baTableClass(new baTableApi('/admin/Activity/'), {
       operatorPlaceholder: t('Fuzzy query'),
       operator: 'LIKE'
     },
+      {
+          label: t('操作人'),
+          prop: 'operator',
+          align: 'center',
+          operatorPlaceholder: t('Fuzzy query'),
+          operator: 'LIKE'
+      },
     {
       label: t('activity.update_time'),
       prop: 'update_time',

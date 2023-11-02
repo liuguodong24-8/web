@@ -30,7 +30,7 @@
                     :label-width="baTable.form.labelWidth + 'px'"
                     :rules="rules"
                 >
-                    <FormItem :label="t('dev.mac_id')" type="string" v-model="baTable.form.items!.mac_id" prop="mac_id" :placeholder="t('Please input field', { field: t('dev.mac_id') })" />
+                    <FormItem :label="t('设备id')" type="string" v-model="baTable.form.items!.mac_id" prop="mac_id" :placeholder="t('Please input field', { field: t('dev.mac_id') })" />
 
                     <!--<FormItem :label="t('dev.user_avatar')" type="image" v-model="baTable.form.items!.user_avatar" prop="user_avatar" />
                     <FormItem :label="t('dev.guardian_name')" type="string" v-model="baTable.form.items!.guardian_name" prop="guardian_name" :placeholder="t('Please input field', { field: t('dev.guardian_name') })" />

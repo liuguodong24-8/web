@@ -53,7 +53,31 @@ const baTable = new baTableClass(new baTableApi('/admin/Todayinhistory/'), {
       sortable: false
     },
     {label: t('todayinhistory.picture'), prop: 'picture', align: 'center', render: 'image', operator: false},
-    {
+  {
+      label: t('发布人'),
+      prop: 'pub_name',
+      align: 'center',
+      operator: 'LIKE',
+      sortable: 'custom',
+      width: 160,
+  },
+  {
+      label: t('学校'),
+      prop: 'school_name',
+      align: 'center',
+      operator: 'LIKE',
+      sortable: 'custom',
+      width: 160,
+  },
+  {
+      label: t('年级'),
+      prop: 'grade_name',
+      align: 'center',
+      operator: 'LIKE',
+      sortable: 'custom',
+      width: 160,
+  },
+  {
       label: t('todayinhistory.update_time'),
       prop: 'update_time',
       align: 'center',
