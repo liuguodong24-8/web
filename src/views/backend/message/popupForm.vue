@@ -34,23 +34,8 @@
 
                     <FormItem :label="t('message.mes_important')" type="radio" v-model="baTable.form.items!.mes_important" prop="mes_important" :data="{ content: { '0': t('message.mes_important 0'), '1': t('message.mes_important 1') } }" :placeholder="t('Please select field', { field: t('message.mes_important') })" />
 
-<!--
-                    <FormItem :label="t('message.image_url')" type="file" v-model="baTable.form.items!.image_url" prop="image_url"  hide-select-button />
--->
 
-
-                    <el-form-item :label="t('message.image_url')">
-
-                        <input class="upload-demo" type="file" ref="fileInput" @change="handleFileChange" />
-
-<!--                        <el-button @change="uploadModuleNews" type="file">上传</el-button>-->
-
-                        <div v-if="isImageUploaded">
-                            <img :src="uploadedImageUrl" alt="Uploaded Image" />
-                            <el-button @click="deleteUploadedImage" type="text">删除</el-button>
-                        </div>
-
-                    </el-form-item>
+                    <FormItem :label="t('message.image_url')" type="images" v-model="baTable.form.items!.image_url" prop="image_url" @upload-success="callFormItemMethod" />
 
                     <FormItem :label="t('message.mes_content')" type="textarea" v-model="baTable.form.items!.mes_content" prop="mes_content" :input-attr="{ rows: 3 }" @keyup.enter.stop="" @keyup.ctrl.enter="baTable.onSubmit(formRef)" :placeholder="t('Please input field', { field: t('message.mes_content') })" />
 
@@ -113,29 +98,16 @@
     margin-right: 40px; /* 设置右侧间距，根据需要调整 */
 }
 
-.upload-demo {
-    border: 1px dashed #409EFF;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    color: #409EFF;
-}
-
-.upload-demo:hover {
-    border-color: #409EFF;
-}
 
 </style>
+
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type baTableClass from '/@/utils/baTable'
 import FormItem from '/@/components/formItem/index.vue'
+
 import type { FormInstance, FormItemRule } from 'element-plus'
 import { buildValidatorData } from '/@/utils/validate'
 
@@ -151,21 +123,18 @@ const rules: Partial<Record<string, FormItemRule[]>> = reactive({
 
 
 import createAxios, {getUrl} from "/@/utils/axios";
-import {UploadFile} from "element-plus";
-import {fileUpload} from "/@/api/common";
-import {upload} from "/@/api/backend/module";
-import {onInstall} from "/@/views/backend/module/index";
-import axios from "axios";
-import {fullUrl} from "/@/utils/common";
 
 const selectedProvince =  ref([]);
 const selectedCity = ref([]);
 const provinces = ref([]);
 const cities = ref([]);
-const fileInput = ref(null);
 
-let uploadedImageUrl = ''; // 初始化为空
-let isImageUploaded = false; // 初始状态为未上传
+
+const callFormItemMethod = () => {
+    // 在这里调用 FormItem 组件的方法
+    FormItem.onImageUpload(); // 替换为实际方法名
+};
+
 
 
 const loadProvinces = () => {
@@ -211,16 +180,6 @@ const handleCityChange = () => {
     baTable.form.items!.selectedCity = selectedCity.value;
 };
 
-const handleSuccess = (response, file, fileList) => {
-    // 处理上传成功的回调
-    if (response.code === 1) {
-        console.log('Uploaded successfully:', file, response);
-        // 更新你的数据模型，baTable.form.items!.image_url
-        uploadedImageUrl = response.data.msg;
-        isImageUploaded = true;
-        //baTable.form.items!.image_url = file
-    }
-};
 
 
 onMounted(() => {
@@ -233,45 +192,6 @@ function handleDialogClose () {
     selectedProvince.value = [];
     selectedCity.value = [];
 }
-
-const handleFileChange = () => {
-    // 获取用户选择的文件
-    const file = fileInput.value.files[0];
-
-    console.log(file)
-    console.log(file.raw)
-
-    // 创建一个 FormData 对象
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // 使用 axios 或其他 HTTP 库发送文件到后台
-    axios.post(getUrl() + '/admin/index/upload', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    }).then((response) => {
-        console.log(response)
-
-        if (response.status == 200) {
-            // 上传成功，处理响应数据
-            //uploadedImageUrl = response.data.msg;
-            //isImageUploaded = true;
-            baTable.form.items!.image_url = response.data.msg; // 将文件添加到表单数据中
-        } else {
-            // 上传失败，处理错误信息
-            console.error('文件上传失败: ' + response.data.message);
-        }
-    }).catch((error) => {
-        console.error('请求失败: ' + error.message);
-    });
-
-};
-
-const deleteUploadedImage = () => {
-    uploadedImageUrl = '';
-    isImageUploaded = false;
-};
 
 </script>
 

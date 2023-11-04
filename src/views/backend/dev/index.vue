@@ -30,7 +30,7 @@
 
                 <!-- 刷新按钮前插槽内容 -->
                 <!-- 一键锁定 -->
-                <el-popconfirm @confirm="onAction(1)"
+                <el-popconfirm @confirm="showUploadForm"
                                :confirm-button-text="t('dev.lock')"
                                :cancel-button-text="t('Cancel')"
                                confirmButtonType="danger"
@@ -38,7 +38,41 @@
                     <template #reference>
                         <el-button type="danger">{{ t('dev.lockAll') }}</el-button>
                     </template>
+
+
+                    <template>
+                        <!-- 其它模板内容 -->
+<!--
+                        <el-popconfirm @confirm="showUploadForm" :title="t('dev.Are you sure to lockAll?')">
+                            <template #reference>
+                                <el-button type="danger">{{ t('dev.lockAll') }}</el-button>
+                            </template>
+                        </el-popconfirm>
+-->
+
+                        <!-- 上传表单弹窗 -->
+                        <el-dialog v-model:visible="uploadFormVisible" title="Upload Form">
+                            <!-- 在这里添加你的上传表单组件 -->
+                            <!-- 例如： -->
+                            <el-form :model="formData" label-width="80px">
+                                <el-form-item label="File">
+                                    <el-upload
+                                        class="upload-demo"
+                                        action="/your-upload-url"
+                                        :on-success="onUploadSuccess"
+                                    >
+                                        <el-button size="small" type="primary">Click to Upload</el-button>
+                                    </el-upload>
+                                </el-form-item>
+                                <!-- 其它表单字段 -->
+                                <!-- ... -->
+                            </el-form>
+                        </el-dialog>
+                    </template>
                 </el-popconfirm>
+
+
+
                 <!-- 一键解锁 -->
                 <el-popconfirm @confirm="onAction(0)"
                                :confirm-button-text="t('dev.unlock')"
@@ -64,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, onMounted } from 'vue'
+import { ref, reactive, provide, onMounted } from 'vue'
 import baTableClass from '/@/utils/baTable'
 import { baTableApi } from '/@/api/common'
 import { lockConfirm } from '/@/api/backend/sccd'
@@ -83,6 +117,28 @@ const openExternalLink = () => {
     const url = 'http://test.hellocrab.top?token='+adminInfo.getToken(); // 要打开的外部链接
     window.open(url, '_blank'); // 打开新窗口并加载链接
 }
+
+
+const uploadFormVisible = ref(false); // 控制上传表单弹窗的显示/隐藏
+const formData = reactive({
+    // 表单数据
+    file: null,
+    // 其它表单字段
+    // ...
+});
+
+
+// 处理一键锁定
+const showUploadForm = () => {
+    uploadFormVisible.value = true;
+};
+
+// 处理上传成功
+const onUploadSuccess = (response, file, fileList) => {
+    // 处理上传成功后的逻辑
+    // ...
+    ElMessage.success('Upload success');
+};
 
 
 /**

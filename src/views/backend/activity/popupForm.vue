@@ -113,7 +113,7 @@ const rules: Partial<Record<string, FormItemRule[]>> = reactive({
 const loadProvinces = () => {
     // 向后台请求省份数据
     createAxios({
-        url: getUrl() + '/admin/dev/schoolListBySchool',
+        url: getUrl() + '/admin/Activity/schoolListBySchool',
         method: 'get',
     }).then((response) => {
         // 处理后台响应并将数据赋值给provinces
@@ -129,7 +129,7 @@ const loadCities = (province) => {
     // 根据实际情况来处理后台响应并将数据赋值给cities
 
     createAxios({
-        url: getUrl() + '/admin/dev/schoolListBySchool',
+        url: getUrl() + '/admin/Activity/schoolListBySchool',
         method: 'get',
         params: {
             key: province,

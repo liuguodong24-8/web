@@ -1,5 +1,5 @@
 <script lang="ts">
-import { createVNode, defineComponent, resolveComponent, PropType, computed } from 'vue'
+import {createVNode, defineComponent, resolveComponent, PropType, computed, ref, onMounted} from 'vue'
 import { inputTypes, modelValueTypes, InputAttr, InputData } from '/@/components/baInput'
 import { FormItemAttr } from '/@/components/formItem'
 import BaInput from '/@/components/baInput/index.vue'
@@ -56,10 +56,23 @@ export default defineComponent({
         const onValueUpdate = (value: modelValueTypes) => {
             emit('update:modelValue', value)
         }
+        // 在 setup 中添加一个响应式变量来跟踪已上传的图片数量
+        const uploadedImageCount = ref(0);
 
         const blockHelp = computed(() => {
             return props.attr && props.attr['blockHelp'] ? props.attr['blockHelp'] : ''
         })
+
+        // 在上传图片时更新已上传图片数量
+        const onImageUpload = () => {
+            uploadedImageCount.value += 1;
+        };
+
+        // 监听上传事件
+        onMounted(() => {
+            // 假设你的上传组件会触发 onImageUpload 事件
+            // 请根据实际情况监听上传事件并在上传成功时调用 onImageUpload
+        });
 
         // el-form-item 的默认插槽,生成一个baInput
         const defaultSlot = () => {
@@ -88,8 +101,18 @@ export default defineComponent({
                 return inputNode
             }
 
-            return inputNode
-        }
+            if (props.type === 'images' && uploadedImageCount.value >= 3) {
+                console.log(uploadedImageCount.value);
+                // 达到最大允许数量时禁用上传功能
+                return inputNode;
+            }
+
+            return [
+                inputNode,
+            ];
+
+         //   return inputNode
+        };
 
         // 不带独立label输入框
         const noNeedLabelSlot = [

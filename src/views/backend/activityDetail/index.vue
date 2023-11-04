@@ -91,7 +91,7 @@
         <ScanQrCode ref="popupQrcode" />
 
         <!-- 弹窗看扫码清单 -->
-        <Activityscan />
+        <ActivityscanStudent />
     </div>
 </template>
 
@@ -103,7 +103,7 @@ import { baTableApi } from '/@/api/common'
 import { useI18n } from 'vue-i18n'
 import PopupForm from './popupForm.vue'
 import ScanQrCode from './scanQrCode.vue'
-import Activityscan from '../activityscan/index.vue'
+import ActivityscanStudent from '../activityscanstudent/index.vue'
 import Table from '/@/components/table/index.vue'
 import TableHeader from '/@/components/table/header/index.vue'
 import createAxios, {getUrl} from "/@/utils/axios";
@@ -128,6 +128,42 @@ const tableRef = ref()
 // const optButtons: OptButton[] = defaultOptButtons(['edit'])
 let optButtons: OptButton[] = defaultOptButtons(['edit'])
 
+let newButton: OptButton[] = [
+    {
+        // 渲染方式:tipButton=带tip的按钮,confirmButton=带确认框的按钮,moveButton=移动按钮
+        render: 'tipButton',
+        // 按钮名称
+        name: 'ScanListStudent',
+        // 鼠标放置时的 title 提示
+        title: '打卡记录',
+        // 直接在按钮内显示的文字，title 有值时可为空
+        text: '',
+        // 按钮类型，请参考 element plus 的按钮类型
+        type: 'primary',
+        // 按钮 icon
+        icon: 'fa fa-search-plus',
+        class: 'table-row-info',
+        // tipButton 禁用 tip
+        disabledTip: false,
+        // 自定义点击事件
+        click: (row: TableRow, field: TableColumn) => {
+            baTable.form.operate = 'ScanListStudent'
+            console.log('row.id');console.log(row.id);
+            baTable.toggleForm('ScanListStudent', [row.id])
+        },
+        // 按钮是否显示，请返回布尔值
+        display: (row: TableRow, field: TableColumn) => {
+            return true
+        },
+        // 按钮是否禁用，请返回布尔值
+        disabled: (row: TableRow, field: TableColumn) => {
+            return false
+        },
+        // 自定义el-button属性
+        attr: {}
+    }
+]
+
 const handleMultiselectSearch = () => {
     // 在这里执行多选搜索的逻辑，根据 selectedFields 和 searchText 进行搜索
     // 可以触发表格数据的筛选操作
@@ -143,7 +179,7 @@ const performSearch = () => {
 
     // 向后台请求index
     createAxios({
-        url: getUrl() + '/admin/DevList/index',
+        url: getUrl() + '/admin/ActivityDetail/index',
         method: 'get',
         params: {
             school: selectedFields.value,
@@ -165,7 +201,7 @@ const performSearch = () => {
 const loadSchool = () => {
     // 向后台请求省份数据
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/ActivityDetail/schoolList',
         method: 'get',
     }).then((response) => {
         // 处理后台响应并将数据赋值给provinces
@@ -177,7 +213,7 @@ const loadSchool = () => {
 
 const loadGrade = (school) => {
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/ActivityDetail/schoolList',
         method: 'get',
         params: {
             key: school,
@@ -192,7 +228,7 @@ const loadGrade = (school) => {
 
 const loadClass = (grade) => {
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/ActivityDetail/schoolList',
         method: 'get',
         params: {
             key: grade,
@@ -207,7 +243,7 @@ const loadClass = (grade) => {
 
 const loadStudent = (classes) => {
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/ActivityDetail/schoolList',
         method: 'get',
         params: {
             key: classes,
@@ -263,15 +299,7 @@ const baTable = new baTableClass(new baTableApi('/admin/ActivityDetail/'), {
           prop: 'count',
           align: 'center',
           operatorPlaceholder: t('Fuzzy query'),
-          operator: 'LIKE'
-      },
-      {
-          label: t('学段名'),
-          prop: 'period.phase_name',
-          align: 'center',
-          operatorPlaceholder: t('Fuzzy query'),
-          render: 'tags',
-          operator: 'LIKE'
+          operator: 'LIKE',
       },
       {
           label: t('年级名'),
@@ -284,14 +312,6 @@ const baTable = new baTableClass(new baTableApi('/admin/ActivityDetail/'), {
       {
           label: t('班级名'),
           prop: 'class_name',
-          align: 'center',
-          operatorPlaceholder: t('Fuzzy query'),
-          operator: 'LIKE',
-          sortable: false
-      },
-      {
-          label: t('年份'),
-          prop: 'in_year',
           align: 'center',
           operatorPlaceholder: t('Fuzzy query'),
           operator: 'LIKE',
@@ -314,14 +334,6 @@ const baTable = new baTableClass(new baTableApi('/admin/ActivityDetail/'), {
           sortable: false
       },
       {
-          label: t('监护人'),
-          prop: 'guardian_name',
-          align: 'center',
-          operatorPlaceholder: t('Fuzzy query'),
-          operator: 'LIKE',
-          sortable: false
-      },
-      {
           label: t('更新时间'),
           prop: 'update_time',
           align: 'center',
@@ -331,6 +343,14 @@ const baTable = new baTableClass(new baTableApi('/admin/ActivityDetail/'), {
           width: 160,
           timeFormat: 'yyyy-mm-dd hh:MM:ss'
       },
+      {
+          label: t('Operate'),
+          align: 'center',
+          width: 120,
+          render: 'buttons',
+          buttons: newButton.concat(optButtons),
+          operator: false
+      }
   ],
   dblClickNotEditColumn: [undefined],
 }, {

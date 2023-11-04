@@ -100,39 +100,6 @@ const optButtons: ({
         // 自定义el-button属性
         attr: {}
     },
-    {
-        // 渲染方式:tipButton=带tip的按钮,confirmButton=带确认框的按钮,moveButton=移动按钮
-        render: 'tipButton',
-        // 按钮名称
-        name: 'ReadyList',
-        // 鼠标放置时的 title 提示
-        title: '推送',
-        // 直接在按钮内显示的文字，title 有值时可为空
-        text: '',
-        // 按钮类型，请参考 element plus 的按钮类型
-        type: 'primary',
-        // 按钮 icon
-        icon: 'fa fa-envelope',
-        class: 'table-row-info',
-        // tipButton 禁用 tip
-        disabledTip: false,
-        // 自定义点击事件
-        click: (row: TableRow, field: TableColumn) => {
-            baTable.form.operate = 'ReadyList'
-            console.log('row.id');console.log(row.id);
-            baTable.toggleForm('ReadyList', [row.id])
-        },
-        // 按钮是否显示，请返回布尔值
-        display: (row: TableRow, field: TableColumn) => {
-            return true
-        },
-        // 按钮是否禁用，请返回布尔值
-        disabled: (row: TableRow, field: TableColumn) => {
-            return false
-        },
-        // 自定义el-button属性
-        attr: {}
-    },
 ]
 
 /**
@@ -162,14 +129,12 @@ const baTable = new baTableClass(new baTableApi('/admin/Message/'), {
         },
         {label: t('message.mes_content'), prop: 'mes_content', align: 'center', operator: false},
         {
-            label: t('message.update_time'),
-            prop: 'update_time',
+            label: t('创建人'),
+            prop: 'operator',
             align: 'center',
-            render: 'datetime',
             operator: 'RANGE',
             sortable: 'custom',
-            width: 160,
-            timeFormat: 'yyyy-mm-dd hh:MM:ss'
+            width: 160
         },
         {
             label: t('message.create_time'),

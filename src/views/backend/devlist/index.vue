@@ -155,7 +155,7 @@ const performSearch = () => {
 const loadSchool = () => {
     // 向后台请求省份数据
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/DevList/schoolList',
         method: 'get',
     }).then((response) => {
         // 处理后台响应并将数据赋值给provinces
@@ -167,7 +167,7 @@ const loadSchool = () => {
 
 const loadGrade = (school) => {
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/DevList/schoolList',
         method: 'get',
         params: {
             key: school,
@@ -182,7 +182,7 @@ const loadGrade = (school) => {
 
 const loadClass = (grade) => {
     createAxios({
-        url: getUrl() + '/admin/dev/schoolList',
+        url: getUrl() + '/admin/DevList/schoolList',
         method: 'get',
         params: {
             key: grade,
@@ -258,7 +258,7 @@ const baTable = new baTableClass(new baTableApi('/admin/DevList/'), {
     pk: 'id',
     column: [
         {type: 'selection', align: 'center', operator: false},
-        {label: t('dev.user_avatar'), prop: 'user_avatar', align: 'center', render: 'image', operator: false},
+        {label: t('头像'), prop: 'user_avatar', align: 'center', render: 'image', operator: false},
         {
             label: t('学生名'),
             prop: 'user_name',
@@ -292,7 +292,7 @@ const baTable = new baTableClass(new baTableApi('/admin/DevList/'), {
             sortable: false
         },
         {
-            label: t('dev.in_year'),
+            label: t('年份'),
             prop: 'in_year',
             align: 'center',
             operatorPlaceholder: t('Fuzzy query'),
@@ -338,22 +338,6 @@ const baTable = new baTableClass(new baTableApi('/admin/DevList/'), {
             operatorPlaceholder: t('Fuzzy query'),
             operator: 'LIKE',
             sortable: false
-        },
-        {
-            label: "设备号",
-            prop: 'device_id',
-            align: 'center',
-            operatorPlaceholder: t('Fuzzy query'),
-            operator: 'LIKE',
-            sortable: false
-        },
-        {
-            label: "mac地址",
-            prop: 'mac_id',
-            align: 'center',
-            operatorPlaceholder: t('Fuzzy query'),
-            render: 'tags',
-            operator: 'LIKE'
         },
         {
             label: "状态",

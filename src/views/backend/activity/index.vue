@@ -1,26 +1,110 @@
 <template>
     <div class="default-main ba-table-box">
-        <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
+<!--        <el-tabs  type="border-card">
+            <el-tab-pane class="config-tab-pane" :label="t('扫码打卡列表')">-->
+                <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
 
-        <!-- 表格顶部菜单 -->
-        <!-- 自定义按钮请使用插槽，甚至公共搜索也可以使用具名插槽渲染，参见文档 -->
-        <TableHeader
-            :buttons="['refresh', 'add', 'comSearch']"
-        ></TableHeader>
+                <!-- 表格顶部菜单 -->
+                <!-- 自定义按钮请使用插槽，甚至公共搜索也可以使用具名插槽渲染，参见文档 -->
+                <TableHeader
+                    :buttons="['refresh', 'add', 'comSearch']"
+                ></TableHeader>
 
-        <!-- 表格 -->
-        <!-- 表格列有多种自定义渲染方式，比如自定义组件、具名插槽等，参见文档 -->
-        <!-- 要使用 el-table 组件原有的属性，直接加在 Table 标签上即可 -->
-        <Table ref="tableRef"></Table>
+                <!-- 表格 -->
+                <!-- 表格列有多种自定义渲染方式，比如自定义组件、具名插槽等，参见文档 -->
+                <!-- 要使用 el-table 组件原有的属性，直接加在 Table 标签上即可 -->
+                <Table ref="tableRef"></Table>
 
-        <!-- 表单 -->
-        <PopupForm />
+                <!-- 表单 -->
+                <PopupForm />
 
-        <!-- 弹窗看二维码 -->
-        <ScanQrCode ref="popupQrcode" />
+                <!-- 弹窗看二维码 -->
+                <ScanQrCode ref="popupQrcode" />
 
-        <!-- 弹窗看扫码清单 -->
-        <Activityscan />
+                <!-- 弹窗看扫码清单 -->
+                <Activityscan />
+<!--            </el-tab-pane>
+            <el-tab-pane
+                class="config-tab-pane config-tab-pane-add"
+                :label="t('扫码打卡列表')"
+            >
+                    <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
+
+                    &lt;!&ndash; 表格顶部菜单 &ndash;&gt;
+                    &lt;!&ndash; 自定义按钮请使用插槽，甚至公共搜索也可以使用具名插槽渲染，参见文档 &ndash;&gt;
+
+                    <TableHeader
+                        :buttons="['comSearch', 'quickSearch', 'columnDisplay']"
+                        :quick-search-placeholder="t('Quick search placeholder', { fields: '搜索字段' })"
+                        @multiselect-search="handleMultiselectSearch"
+                    >
+                        <template #refreshPrepend>
+                            &lt;!&ndash; 刷新按钮前插槽内容 &ndash;&gt;
+                            &lt;!&ndash; 一键锁定 &ndash;&gt;
+                            <div>
+                                &lt;!&ndash; 多选搜索框 &ndash;&gt;
+                                <div class="multiselect-search">
+                                    <el-select style="margin-left: 20px" v-model="selectedFields"   @change="handleSchoolChange" clearable filterable>
+                                        <el-option
+                                            v-for="field in school"
+                                            :key="field.value"
+                                            :label="field.label"
+                                            :value="field.value"
+                                        ></el-option>
+                                    </el-select>
+
+                                    <el-select  style="margin-left: 20px" v-model="selectedGrade"  @change="handleGradeChange"  clearable filterable>
+                                        <el-option
+                                            v-for="field in grade"
+                                            :key="field.value"
+                                            :label="field.label"
+                                            :value="field.value"
+                                        ></el-option>
+                                    </el-select>
+
+                                    <el-select style="margin-left: 20px" v-model="selectedClass"   @change="handleClassChange" clearable filterable>
+                                        <el-option
+                                            v-for="field in classes"
+                                            :key="field.value"
+                                            :label="field.label"
+                                            :value="field.value"
+                                        ></el-option>
+                                    </el-select>
+
+                                    <el-select style="margin-left: 20px" v-model="selectedStudent" clearable filterable>
+                                        <el-option
+                                            v-for="field in students"
+                                            :key="field.value"
+                                            :label="field.label"
+                                            :value="field.value"
+                                        ></el-option>
+                                    </el-select>
+
+                                    <el-button @click="handleMultiselectSearch">查询</el-button>
+                                </div>
+                            </div>
+                        </template>
+                    </TableHeader>
+
+                    &lt;!&ndash; 表格 &ndash;&gt;
+                    &lt;!&ndash; 表格列有多种自定义渲染方式，比如自定义组件、具名插槽等，参见文档 &ndash;&gt;
+                    &lt;!&ndash; 要使用 el-table 组件原有的属性，直接加在 Table 标签上即可 &ndash;&gt;
+                    <Table ref="tableRef1"></Table>
+
+                    &lt;!&ndash; 表单 &ndash;&gt;
+&lt;!&ndash;                    <PopupForm />&ndash;&gt;
+
+                    &lt;!&ndash; 弹窗看二维码 &ndash;&gt;
+&lt;!&ndash;                    <ScanQrCode ref="popupQrcode" />&ndash;&gt;
+
+                    &lt;!&ndash; 弹窗看扫码清单 &ndash;&gt;
+                    <ActivityscanStudent />
+
+            </el-tab-pane>-->
+<!--
+        </el-tabs>
+-->
+
     </div>
 </template>
 
@@ -33,15 +117,34 @@ import { useI18n } from 'vue-i18n'
 import PopupForm from './popupForm.vue'
 import ScanQrCode from './scanQrCode.vue'
 import Activityscan from '../activityscan/index.vue'
+import ActivityscanStudent from '../activityscanstudent/index.vue'
+
 import Table from '/@/components/table/index.vue'
 import TableHeader from '/@/components/table/header/index.vue'
+import FormItem from "/@/components/formItem/index.vue";
+import createAxios, {getUrl} from "/@/utils/axios";
 
 defineOptions({
     name: 'activity',
 })
 
+const selectedFields = ref([]); // 选择的字段
+const selectedGrade = ref([]); // 选择的字段
+const selectedClass = ref([]); // 选择的字段
+const selectedStudent = ref([]); // 选择的字段
+
+const school = ref([]); // 选择的字段
+const grade = ref([]); // 选择的字段
+const classes = ref([]); // 选择的字段
+const students = ref([]); // 选择的字段
+
+
+
+
+
 const { t } = useI18n()
 const tableRef = ref()
+const tableRef1 = ref()
 // const optButtons: OptButton[] = defaultOptButtons(['edit'])
 let optButtons: OptButton[] = defaultOptButtons(['edit'])
 // 自定义一个新的按钮
@@ -177,6 +280,8 @@ const baTable = new baTableClass(new baTableApi('/admin/Activity/'), {
   defaultItems: {},
 })
 
+
+
 provide('baTable', baTable)
 
 onMounted(() => {
@@ -186,6 +291,8 @@ onMounted(() => {
         baTable.initSort()
         baTable.dragSort()
     })
+
+   // loadSchool()
 })
 </script>
 
